@@ -1,0 +1,31 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    string name;
+    Node *left, *right;
+};
+
+Node* insert(Node* r, string s) {
+    if (!r) {
+        r = new Node{s, NULL, NULL};
+        return r;
+    }
+    if (s < r->name) r->left = insert(r->left, s);
+    else if (s > r->name) r->right = insert(r->right, s);
+    return r;
+}
+
+bool search(Node* r, string s) {
+    if (!r) return false;
+    if (r->name == s) return true;
+    return s < r->name ? search(r->left, s) : search(r->right, s);
+}
+
+int main() {
+    Node* root = NULL;
+    root = insert(root, "apple");
+    root = insert(root, "mango");
+
+    cout << "Search mango: " << search(root, "mango");
+}
