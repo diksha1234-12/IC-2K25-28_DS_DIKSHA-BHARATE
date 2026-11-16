@@ -1,0 +1,20 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    string name;
+    Node *child, *sibling;
+};
+
+int main() {
+    Node root = {"Root", NULL, NULL};
+    Node folder = {"Documents", NULL, NULL};
+    Node file = {"Notes.txt", NULL, NULL};
+
+    root.child = &folder;
+    folder.child = &file;
+
+    cout << root.name << "/";
+    cout << folder.name << "/";
+    cout << file.name;
+}
