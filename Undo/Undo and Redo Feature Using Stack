@@ -1,0 +1,22 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int main() {
+    stack<string> undo, redo;
+
+    undo.push("Hello");
+    undo.push("Hello World");
+
+    cout << "Current: " << undo.top() << endl;
+
+    redo.push(undo.top());
+    undo.pop();
+
+    cout << "After Undo: " << undo.top() << endl;
+
+    undo.push(redo.top());
+    redo.pop();
+
+    cout << "After Redo: " << undo.top();
+}
