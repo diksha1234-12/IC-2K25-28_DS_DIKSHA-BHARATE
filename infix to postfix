@@ -1,0 +1,30 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int main() {
+    string s = "A+B*C", p = "";
+    stack<char> st;
+
+    for (char c : s) {
+        if (isalnum(c)) p += c;
+        else {
+            while (!st.empty() && st.top() != '(' &&
+                   (c == '+' || c == '-' || c == '*' || c == '/') &&
+                   (st.top() == '*' || st.top() == '/' ||
+                   ((c == '+' || c == '-') &&
+                   (st.top() == '+' || st.top() == '-')))) {
+                p += st.top();
+                st.pop();
+            }
+            st.push(c);
+        }
+    }
+
+    while (!st.empty()) {
+        p += st.top();
+        st.pop();
+    }
+
+    cout << "Postfix: " << p;
+}
