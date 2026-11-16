@@ -1,0 +1,133 @@
+
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int coeff, power;
+    Node* next;
+
+    Node(int c, int p) {
+        coeff = c;
+        power = p;
+        next = NULL;
+    }
+};
+
+class Polynomial {
+public:
+    Node* head = NULL;
+
+    void insert(int c, int p) {
+        Node* n = new Node(c, p);
+
+        if (!head || head->power < p) {
+            n->next = head;
+            head = n;
+            return;
+        }
+
+        Node* temp = head;
+
+        while (temp->next && temp->next->power > p)
+            temp = temp->next;
+
+        if (temp->power == p) {
+            temp->coeff += c;
+            delete n;
+            return;
+        }
+
+        if (temp->next && temp->next->power == p) {
+            temp->next->coeff += c;
+            delete n;
+            return;
+        }
+
+        n->next = temp->next;
+        temp->next = n;
+    }
+
+    void display() {
+        Node* temp = head;
+
+        while (temp) {
+            cout << temp->coeff << "x^" << temp->power;
+            temp = temp->next;
+
+            if (temp) cout << " + ";
+        }
+        cout << endl;
+    }
+
+    static Polynomial add(Polynomial a, Polynomial b) {
+        Polynomial result;
+
+        Node* p = a.head;
+        Node* q = b.head;
+
+        while (p && q) {
+            if (p->power == q->power) {
+                result.insert(p->coeff + q->coeff, p->power);
+                p = p->next;
+                q = q->next;
+            }
+            else if (p->power > q->power) {
+                result.insert(p->coeff, p->power);
+                p = p->next;
+            }
+            else {
+                result.insert(q->coeff, q->power);
+                q = q->next;
+            }
+        }
+
+        while (p) {
+            result.insert(p->coeff, p->power);
+            p = p->next;
+        }
+
+        while (q) {
+            result.insert(q->coeff, q->power);
+            q = q->next;
+        }
+
+        return result;
+    }
+};
+
+int main() {
+    Polynomial p1, p2, result;
+    int n, c, e;
+
+    cout << "Enter number of terms in first polynomial: ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter coefficient and exponent: ";
+        cin >> c >> e;
+        p1.insert(c, e);
+    }
+
+    cout << "Enter number of terms in second polynomial: ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter coefficient and exponent: ";
+        cin >> c >> e;
+        p2.insert(c, e);
+    }
+
+    cout << "\nFirst Polynomial: ";
+    p1.display();
+
+    cout << "Second Polynomial: ";
+    p2.display();
+
+    result = Polynomial::add(p1, p2);
+
+    cout << "Addition Result: ";
+    result.display();
+
+    return 0;
+}
