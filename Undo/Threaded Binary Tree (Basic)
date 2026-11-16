@@ -1,0 +1,19 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node *left, *right;
+    bool thread;
+};
+
+int main() {
+    Node a = {10, NULL, NULL, false};
+    Node b = {20, NULL, NULL, false};
+
+    a.right = &b;
+    a.thread = true;
+
+    cout << "Node: " << a.data;
+    cout << "\nThread points to: " << a.right->data;
+}
