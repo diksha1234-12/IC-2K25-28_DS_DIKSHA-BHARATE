@@ -1,0 +1,31 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    string name;
+    Node *left, *right;
+};
+
+Node* insert(Node* r, string s) {
+    if (!r) return new Node{s, NULL, NULL};
+    if (s < r->name) r->left = insert(r->left, s);
+    else if (s > r->name) r->right = insert(r->right, s);
+    return r;
+}
+
+void display(Node* r) {
+    if (!r) return;
+    display(r->left);
+    cout << r->name << endl;
+    display(r->right);
+}
+
+int main() {
+    Node* root = NULL;
+    root = insert(root, "Documents");
+    root = insert(root, "Downloads");
+    root = insert(root, "Pictures");
+
+    cout << "Directory Files:\n";
+    display(root);
+}
