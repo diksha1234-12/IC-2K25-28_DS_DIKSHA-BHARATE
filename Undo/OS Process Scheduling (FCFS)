@@ -1,0 +1,18 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+int main() {
+    queue<int> q;
+
+    q.push(101);
+    q.push(102);
+    q.push(103);
+
+    cout << "Process Execution:\n";
+
+    while (!q.empty()) {
+        cout << "Process P" << q.front() << endl;
+        q.pop();
+    }
+}
