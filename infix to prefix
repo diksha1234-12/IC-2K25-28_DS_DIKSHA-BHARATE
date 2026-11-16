@@ -1,0 +1,24 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    string s = "A+B*C";
+
+    reverse(s.begin(), s.end());
+
+    for (char &c : s) {
+        if (c == '(') c = ')';
+        else if (c == ')') c = '(';
+    }
+
+    string p = "";
+    for (char c : s) {
+        if (isalnum(c)) p += c;
+        else p += c;
+    }
+
+    reverse(p.begin(), p.end());
+
+    cout << "Prefix: " << p;
+}
