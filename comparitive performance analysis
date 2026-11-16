@@ -1,0 +1,25 @@
+#include <iostream>
+#include <algorithm>
+#include <chrono>
+#include <cstdlib>
+using namespace std;
+using namespace chrono;
+
+int main() {
+    int sizes[]={100,500,1000};
+
+    for(int n:sizes) {
+        int a[n];
+
+        for(int i=0;i<n;i++) a[i]=rand()%1000;
+
+        auto start=high_resolution_clock::now();
+        sort(a,a+n);
+        auto stop=high_resolution_clock::now();
+
+        cout<<"Size: "<<n
+            <<" Time: "
+            <<duration<double,milli>(stop-start).count()
+            <<" ms"<<endl;
+    }
+}
