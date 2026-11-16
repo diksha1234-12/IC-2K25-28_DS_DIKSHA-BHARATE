@@ -1,0 +1,56 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int priority(char op) {
+    if (op == '+' || op == '-') return 1;
+    if (op == '*' || op == '/') return 2;
+    return 0;
+}
+
+void calculate(stack<int>& v, stack<char>& o) {
+    int b = v.top(); v.pop();
+    int a = v.top(); v.pop();
+    char op = o.top(); o.pop();
+
+    if (op == '+') v.push(a + b);
+    if (op == '-') v.push(a - b);
+    if (op == '*') v.push(a * b);
+    if (op == '/') v.push(a / b);
+}
+
+int main() {
+    string s = "2+(3*4)";
+    stack<int> v;
+    stack<char> o;
+
+    for (int i = 0; i < s.size(); i++) {
+        if (isspace(s[i])) continue;
+
+        if (isdigit(s[i])) {
+            int n = 0;
+            while (i < s.size() && isdigit(s[i])) {
+                n = n * 10 + s[i++] - '0';
+            }
+            v.push(n);
+            i--;
+        }
+        else if (s[i] == '(') o.push('(');
+        else if (s[i] == ')') {
+            while (o.top() != '(') calculate(v, o);
+            o.pop();
+        }
+        else {
+            while (!o.empty() && o.top() != '(' &&
+                   priority(o.top()) >= priority(s[i]))
+                calculate(v, o);
+            o.push(s[i]);
+        }
+    }
+
+    while (!o.empty()) calculate(v, o);
+
+    cout << "Result: " << v.top();
+}
