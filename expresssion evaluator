@@ -1,0 +1,42 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int main() {
+    stack<int> s;
+    stack<char> op;
+    string exp = "(2+3)*4";
+
+    for (char c : exp) {
+        if (isdigit(c)) s.push(c - '0');
+        else if (c == '(') op.push(c);
+        else if (c == ')') {
+            while (!op.empty() && op.top() != '(') {
+                int b=s.top(); s.pop();
+                int a=s.top(); s.pop();
+                char o=op.top(); op.pop();
+                s.push(o=='+'?a+b:o=='-'?a-b:o=='*'?a*b:a/b);
+            }
+            op.pop();
+        }
+        else {
+            while (!op.empty() && op.top()!='(' &&
+                   (op.top()=='*'||op.top()=='/')) {
+                int b=s.top(); s.pop();
+                int a=s.top(); s.pop();
+                char o=op.top(); op.pop();
+                s.push(o=='*'?a*b:a/b);
+            }
+            op.push(c);
+        }
+    }
+
+    while (!op.empty()) {
+        int b=s.top(); s.pop();
+        int a=s.top(); s.pop();
+        char o=op.top(); op.pop();
+        s.push(o=='+'?a+b:o=='-'?a-b:o=='*'?a*b:a/b);
+    }
+
+    cout << "Result: " << s.top();
+}
