@@ -1,0 +1,23 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int main() {
+    stack<int> s;
+    stack<char> op;
+    string exp = "2+3*4";
+
+    for (int i = 0; i < exp.length(); i++) {
+        if (isdigit(exp[i]))
+            s.push(exp[i] - '0');
+        else {
+            int b = s.top(); s.pop();
+            int a = s.top(); s.pop();
+
+            if (exp[i] == '+') s.push(a + b);
+            if (exp[i] == '*') s.push(a * b);
+        }
+    }
+
+    cout << "Result: " << s.top();
+}
