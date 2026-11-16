@@ -1,0 +1,38 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+Node* top = NULL;
+
+void push(int x) {
+    Node* n = new Node{x, top};
+    top = n;
+}
+
+void pop() {
+    if (!top) cout << "Stack Empty";
+    else {
+        Node* t = top;
+        cout << "Deleted: " << t->data;
+        top = top->next;
+        delete t;
+    }
+}
+
+void display() {
+    for (Node* t = top; t; t = t->next)
+        cout << t->data << " ";
+}
+
+int main() {
+    push(10);
+    push(20);
+    push(30);
+    display();
+    pop();
+    return 0;
+}
